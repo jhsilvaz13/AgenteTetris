@@ -4,11 +4,11 @@ import win32gui, win32ui, win32con
 class WindowCapture:
 
     # properties
-    w = 170
-    h = 370
+    w = 166
+    h = 331
     hwnd = None
-    cropped_x = 395
-    cropped_y = 340
+    cropped_x = 397
+    cropped_y = 378
     offset_x = 0
     offset_y = 0
 
@@ -31,7 +31,7 @@ class WindowCapture:
         self.offset_x = window_rect[0] + self.cropped_x
         self.offset_y = window_rect[1] + self.cropped_y
 
-    def get_screenshot(self):
+    def get_screenshot(self) -> np.ndarray:
 
         # get the window image data
         wDC = win32gui.GetWindowDC(self.hwnd)
@@ -47,7 +47,6 @@ class WindowCapture:
         signedIntsArray = dataBitMap.GetBitmapBits(True)
         img = np.fromstring(signedIntsArray, dtype='uint8')
         img.shape = (self.h, self.w, 4)
-
         # free resources
         dcObj.DeleteDC()
         cDC.DeleteDC()
@@ -65,5 +64,14 @@ class WindowCapture:
         # see the discussion here:
         # https://github.com/opencv/opencv/issues/14866#issuecomment-580207109
         img = np.ascontiguousarray(img)
-
+        self.get_img_properties(img)
         return img
+    
+    def get_img_properties(self, ndarray: np.ndarray) -> None:
+        print("""
+            shape: {}
+            dtype: {}
+            min: {}
+            max: {}
+            """.format(ndarray.shape, ndarray.dtype, ndarray.min(), ndarray.max()))
+        return None

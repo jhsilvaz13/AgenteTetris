@@ -18,6 +18,14 @@ boardcap = b_Cap()
 nextcap = n_Cap()
 
 loop_time = time()
+"""
+
+board = boardcap.get_screenshot()   
+board_gray = cv.cvtColor(board, cv.COLOR_BGR2GRAY)
+cv.imshow('Board (Grayscale)', board_gray)
+cv.moveWindow('Board (Grayscale)', 930, 200)
+
+"""
 while(True):
 
     # get an updated image of the game
@@ -26,9 +34,10 @@ while(True):
     cv.moveWindow('Hold', 800, 200)
 
     board = boardcap.get_screenshot()   
-    cv.imshow('Board', board)
-    cv.moveWindow('Board', 930, 200)
-
+    board_gray = cv.cvtColor(board, cv.COLOR_BGR2GRAY)
+    cv.imshow('Board (Grayscale)', board_gray)
+    cv.moveWindow('Board (Grayscale)', 930, 200)
+    print(board_gray)
     next = nextcap.get_screenshot()   
     cv.imshow('Next', next)
     cv.moveWindow('Next', 1120, 200)
@@ -44,4 +53,3 @@ while(True):
         break
 
 print('Done.')
-#print(1536/2, " ", 864/4)
