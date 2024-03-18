@@ -4,11 +4,11 @@ import win32gui, win32ui, win32con
 class WindowCapture:
 
     # properties
-    w = 166
-    h = 331
+    w = 164
+    h = 362
     hwnd = None
-    cropped_x = 397
-    cropped_y = 378
+    cropped_x = 398
+    cropped_y = 344
     offset_x = 0
     offset_y = 0
 
