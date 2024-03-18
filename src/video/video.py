@@ -17,5 +17,5 @@ def threshold_image(image: np.ndarray) -> np.ndarray:
     _, thresh = cv.threshold(gray, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
     return thresh
 
-def to_matrix(image:np.ndarray) -> Matrix:
-    return Matrix(image)
+def to_matrix(image:np.ndarray, height:int=22, width:int=10) -> Matrix:
+    return Matrix(image, height, width)

@@ -2,13 +2,12 @@ import numpy as np
 import win32gui, win32ui, win32con
 
 class WindowCapture:
-
     # properties
-    w = 75
-    h = 250
+    w = 80
+    h = 48
     hwnd = None
-    cropped_x = 580
-    cropped_y = 390
+    cropped_x = 578
+    cropped_y = 398
     offset_x = 0
     offset_y = 0
 
@@ -65,5 +64,4 @@ class WindowCapture:
         # see the discussion here:
         # https://github.com/opencv/opencv/issues/14866#issuecomment-580207109
         img = np.ascontiguousarray(img)
-
         return img

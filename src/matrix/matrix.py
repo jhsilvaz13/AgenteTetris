@@ -12,9 +12,9 @@ logging.basicConfig(level=logging.DEBUG)
 class Matrix:
     image: np.ndarray
     matrix: np.ndarray
-    def __init__(self, image: np.ndarray):
+    def __init__(self, image: np.ndarray, height:int=22, width:int=10) -> None:
         self.image = image
-        self.matrix = np.zeros((22,10), dtype=int)
+        self.matrix = np.zeros((height, width), dtype=int)
         self.__matrix_reduction()
 
     def __matrix_reduction(self) -> np.ndarray:

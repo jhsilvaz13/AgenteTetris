@@ -69,9 +69,12 @@ class WindowCapture:
     
     def get_img_properties(self, ndarray: np.ndarray) -> None:
         print("""
-            shape: {}
-            dtype: {}
-            min: {}
-            max: {}
-            """.format(ndarray.shape, ndarray.dtype, ndarray.min(), ndarray.max()))
+        IMAGE PROPERTIES
+        shape: {}
+        dtype: {}
+        min: {}
+        max: {}
+        """.format(ndarray.shape, 
+                   ndarray.dtype, 
+                   ndarray.min(), ndarray.max()))
         return None
