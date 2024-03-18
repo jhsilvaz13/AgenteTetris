@@ -1,5 +1,6 @@
 """
-Esta clase toma un np.array y lo convierte en una matriz 10x20
+Esta clase toma un np.array que representa la imagen
+y lo convierte en una matriz 22x10
 que representa el tablero de tetris.
 """
 
@@ -22,8 +23,8 @@ class Matrix:
         22x10 con:
         - 1 si la casilla esta ocupada
         - 0 si la casilla esta vacía
-        Representa el tablero de tetris.
-        La imagen debe ser en escala de grises.
+        Representa el tablero de tetris, la imagen debe ser en escala de grises.
+        El tamaño es 22 pues en las dos primeras filas se encuentra la ficha actual
         """
         for i in range(self.image.shape[0]):
             for j in range(self.image.shape[1]):
