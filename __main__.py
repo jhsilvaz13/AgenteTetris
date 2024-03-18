@@ -16,7 +16,6 @@ time.sleep(3)
 
 board = WindowCapture()
 board = board.get_screenshot()
-0
 
 """
 Convertir la imagen a escala de grises 
@@ -32,7 +31,6 @@ thresh2 = cv.resize(thresh2, (10, 22))
 """
 Crear la matriz 22x10
 """
-# Crear la matriz
 matrix = Matrix(thresh2)
 matrix.print_board()
 logging.info("The matrix size is: {}".format(board_gray.shape))
