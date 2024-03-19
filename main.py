@@ -26,9 +26,15 @@ if __name__ == "__main__":
         game =  Tetris(board)
         # game.print_board()
         # print("")
-        if (game.get_current_tetramino_type() != None):
-            print("The current tetramino is: {}".format(game.get_current_tetramino_type()))
-            print("The current aggregate height is: {}".format(game.aggregate_height()))
+        
+        actual_piece = game.get_current_tetramino_type()
+        aggregate_height = game.aggregate_height()
+        holes = game.holes()
+        
+        if (actual_piece != None):
+            print("The current tetramino is: {}".format(actual_piece))
+            print("The current aggregate height is: {}".format(aggregate_height))
+            print("The current number of holes is: {}".format(holes))
 
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)
