@@ -17,7 +17,7 @@ class Matrix:
         self.matrix = np.zeros((height, width), dtype=int)
         self.__matrix_reduction()
 
-    def __matrix_reduction(self) -> np.ndarray:
+    def __matrix_reduction(self) -> None:
         """
         Esta función toma la imagen que se paso en el constructor y lo convierte en una matriz 
         22x10 con:
@@ -30,6 +30,4 @@ class Matrix:
             for j in range(self.image.shape[1]):
                 if self.image[i][j] == 255:
                     self.matrix[i][j] = 1
-
-    def print_board(self) -> str:
-        print(self.matrix)
+        return None

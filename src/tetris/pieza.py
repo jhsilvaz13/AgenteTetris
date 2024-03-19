@@ -2,26 +2,34 @@
 # -*- coding: utf-8 -*-
 #import abejas_tetris.tetris 
 from .tipo_pieza import *
+import numpy as np
 
 class Pieza:
     """ Representa una pieza dentro del tablero. """
-    def __init__(self, tipo, posicion):
+    _zone: np.ndarray# zona de la pieza en el tablero
+    _tipo: Tipo # tipo de la pieza
+
+    def __init__(self, zone:np.ndarray):
         """
         Parameters
         ----------
-        tipo : Tipo
-                El tipo de los 7 posibles de pieza.
-        posicion : Punto
-                Es un punto de tipo (X,Y).
+        zone : np.ndarray
+            Es la zona donde se puede buscar la pieza.4
+            Corresponde a la mitad superior del tablero.
+            Esta es de tamaño 2x10.
         """
-        self._tipo = tipo
         self._orientacion = 0
-        self._posicion = posicion
         self._casillas = self.__get_casillas()
         for i in self._casillas:
             i.set_tipo(tipo)
         self._fijo = False
 
+    def create_piece(self):
+        """
+        Extraer de la zona el tipo de pieza que corresponde.
+        Dependiendo de la zona se puede saber que tipo de pieza es.
+        """
+        
     def clona(self):
         """
         Regresa un clon del objeto
