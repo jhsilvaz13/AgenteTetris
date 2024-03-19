@@ -2,14 +2,11 @@ import numpy
 from src.matrix.matrix import Matrix
 
 class Board:
-    _matrix: Matrix #representa el tablero del juego 22x10
-    height = 22
-    width = 10
 
     def __init__(self, matrix:numpy.ndarray, height:int=22, width:int=10):
-        self._matrix = matrix
-        self.height = height
-        self.width = width
+        self._matrix: Matrix = matrix
+        self.height:int = height
+        self.width:int = width
     
     def get_matrix(self) -> numpy.ndarray:
         return self._matrix.matrix
@@ -30,4 +27,9 @@ class Board:
             for j in range(self.width):
                 if self._matrix[i][j] == 1:
                     return tuple(i,j)
+    def get_zone_tetramino(self,) -> numpy.ndarray:
+        """
+        Retorna la zona de la matriz que corresponde a la pieza
+        """
+        return self._matrix.matrix[0:2,3:7]
             

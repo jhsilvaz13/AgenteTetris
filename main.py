@@ -22,6 +22,7 @@ if __name__ == "__main__":
         board = to_matrix(board)
         game =  Tetris(board)
         game.print_board()
+        print("The current tetramino is: {}".format(game.get_current_tetramino_type()))
 
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)

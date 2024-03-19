@@ -3,11 +3,11 @@
 #from abejas_tetris.my_random import get_random, get_randrange, get_randbits
 import numpy as np
 from src.tetris.tablero import Board
+from src.tetris.pieza import Pieza
+from src.tetris.tipo_pieza import Tipo
+
 class Tetris:
     """ Representa un juego de tetris con todos sus componentes."""
-    _board: Board
-    _next: np.ndarray
-    _hold: np.ndarray
     def __init__(self, matrix:np.ndarray=None, next:np.ndarray=None, hold:np.ndarray=None):
         """
         Parameters
@@ -32,7 +32,18 @@ class Tetris:
         """
         print(self._tablero.get_matrix())
         return None
-
+    
+    def gwt_current_tetramino(self) -> np.ndarray:
+        """
+        Regresa la pieza actual.
+        """
+        return Pieza(self._tablero.get_zone_tetramino()).get_zone()
+    def get_current_tetramino_type(self) -> Tipo:
+        """
+        Regresa el tipo de la pieza actual.
+        """
+        return Pieza(self._tablero.get_zone_tetramino()).get_tipo()
+    
     def desactiva_limpieza_automatica(self):
         """
         Quita la remoción automática de filas llenas.

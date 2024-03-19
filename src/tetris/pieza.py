@@ -6,9 +6,6 @@ import numpy as np
 
 class Pieza:
     """ Representa una pieza dentro del tablero. """
-    _zone: np.ndarray# zona de la pieza en el tablero
-    _tipo: Tipo # tipo de la pieza
-
     def __init__(self, zone:np.ndarray):
         """
         Parameters
@@ -18,27 +15,50 @@ class Pieza:
             Corresponde a la mitad superior del tablero.
             Esta es de tamaño 2x10.
         """
+        self._zone: np.ndarray = zone
+        self._tipo: Tipo = None
         self._orientacion = 0
-        self._casillas = self.__get_casillas()
-        for i in self._casillas:
-            i.set_tipo(tipo)
-        self._fijo = False
+        self.create_piece()
 
     def create_piece(self):
         """
         Extraer de la zona el tipo de pieza que corresponde.
         Dependiendo de la zona se puede saber que tipo de pieza es.
         """
-        
-    def clona(self):
+        if self._zone[0][0:4].all() == 1:
+            self._tipo = Tipo.I
+            return
+        elif self._zone[0][1:3].all() == 1 and self._zone[1][0:2].all() == 1:
+            self._tipo = Tipo.RS
+            return
+        elif self._zone[0][0] == 1 and self._zone[1][0:3].all() == 1:
+            self._tipo = Tipo.LS
+            return
+        elif self._zone[0][1] == 1 and self._zone[1][0:3].all() == 1:
+            self._tipo = Tipo.T
+            return
+        elif self._zone[0][2] == 1 and self._zone[1][0:3].all() == 1:
+            self._tipo = Tipo.RG
+        elif self._zone[0][0:2].all() == 1 and self._zone[1][1:3].all() == 1:
+            self._tipo = Tipo.LG
+            return
+        elif self._zone[0][1:3].all() == 1 and self._zone[1][1:3].all() == 1:
+            self._tipo = Tipo.Sq
+        else:
+            self._tipo = None
+            return
+
+    def get_zone(self) -> np.ndarray:
         """
-        Regresa un clon del objeto
+        Regresa la zona de la pieza.
         """
-        pos = Punto(self._posicion.get_x(), self._posicion.get_y())
-        clone = Pieza(self._tipo, pos)
-        clone.set_puntos(self.get_casillas_self())
-        clone.set_orientacion(self._orientacion)
-        return clone
+        return self._zone
+    
+    def get_tipo(self) -> Tipo:
+        """
+        Regresa el tipo de la pieza.
+        """
+        return self._tipo.name
 
     def get_orientacion(self):
         """

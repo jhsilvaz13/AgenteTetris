@@ -5,39 +5,46 @@ from enum import Enum
 class Tipo(Enum):
     """Este enum representa las posibles piezas del juego de Tetris"""
     """
-    ####
+    0 0 0 0
+    0 0 0 0
+    """
+    EMPTY = 0
+    """
+    1 1 1 1
+    0 0 0 0
     """
     I = 1
     """
-     ##
-    ##
+    0 1 1 0
+    1 1 0 0
     """
     RS = 2
     """
-    ###
-      #
+    1 0 0 0 
+    1 1 1 0 
     """
     LG = 3
     """
-     #  
-    ###
+    0 1 0 0
+    1 1 1 0
     """
     T = 4
     """
-    ###
-    #
+    0 0 1 0
+    1 1 1 0
     """
     RG = 5
     """
-    ##
-     ##
+    1 1 0 0
+    0 1 1 0 
     """
     LS = 6
     """
-    ##
-    ##
+    0 1 1 0
+    0 1 1 0
     """
     Sq = 7
+
 
 def instancia_i(pos):
     """ Regresa una lista con las casillas de la pieza I """
