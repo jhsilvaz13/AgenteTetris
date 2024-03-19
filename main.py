@@ -18,16 +18,17 @@ if __name__ == "__main__":
 
         # Esto captura el tablero del juego
         board = boardcap.get_screenshot()
+        board = threshold_image(board)
         cv.imshow('Board', board)
         cv.moveWindow('Board', 1000, 200)
-        board = threshold_image(board)
         board = resize_image(board, 10, 22)
         board = to_matrix(board)
         game =  Tetris(board)
-        game.print_board()
-        print("")
+        # game.print_board()
+        # print("")
         if (game.get_current_tetramino_type() != None):
             print("The current tetramino is: {}".format(game.get_current_tetramino_type()))
+            print("The current aggregate height is: {}".format(game.aggregate_height()))
 
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)

@@ -33,6 +33,18 @@ class Tetris:
         print(self._tablero.get_matrix())
         return None
     
+    def aggregate_height(self) -> None:
+        # Calculate aggregate height
+        grid = self._tablero.get_matrix()
+        aggregate_height = 0
+        for column in range(10):
+            found_first_one = False
+            for row in range(8, 22):
+                if grid[row][column] and not found_first_one:
+                    found_first_one = True
+                    aggregate_height += len(grid) - row
+        return aggregate_height
+    
     def gwt_current_tetramino(self) -> np.ndarray:
         """
         Regresa la pieza actual.
