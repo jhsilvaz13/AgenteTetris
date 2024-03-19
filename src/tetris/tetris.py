@@ -38,6 +38,7 @@ class Tetris:
         Regresa la pieza actual.
         """
         return Pieza(self._tablero.get_zone_tetramino()).get_zone()
+    
     def get_current_tetramino_type(self) -> Tipo:
         """
         Regresa el tipo de la pieza actual.

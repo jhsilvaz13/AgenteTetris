@@ -15,14 +15,19 @@ if __name__ == "__main__":
         hold = to_matrix(hold)
         hold.print_board()
         """
+
         # Esto captura el tablero del juego
         board = boardcap.get_screenshot()
+        cv.imshow('Board', board)
+        cv.moveWindow('Board', 1000, 200)
         board = threshold_image(board)
         board = resize_image(board, 10, 22)
         board = to_matrix(board)
         game =  Tetris(board)
         game.print_board()
-        print("The current tetramino is: {}".format(game.get_current_tetramino_type()))
+        print("")
+        if (game.get_current_tetramino_type() != None):
+            print("The current tetramino is: {}".format(game.get_current_tetramino_type()))
 
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)
@@ -35,3 +40,7 @@ if __name__ == "__main__":
         next = to_matrix(next,height=3, width=5)
         next.print_board()
         """
+
+        if cv.waitKey(1) == ord('q'):
+            cv.destroyAllWindows()
+            break

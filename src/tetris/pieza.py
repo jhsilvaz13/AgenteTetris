@@ -26,21 +26,26 @@ class Pieza:
         Dependiendo de la zona se puede saber que tipo de pieza es.
         """
         if self._zone[0][0:4].all() == 1:
-            self._tipo = Tipo.I
+            # self._tipo = Tipo.I
+            self._tipo = Tipo.Linea
             return
         elif self._zone[0][1:3].all() == 1 and self._zone[1][0:2].all() == 1:
-            self._tipo = Tipo.RS
+            # self._tipo = Tipo.RS
+            self._tipo = Tipo.S
             return
-        elif self._zone[0][0] == 1 and self._zone[1][0:3].all() == 1:
-            self._tipo = Tipo.LS
+        elif self._zone[0][0:2].all() == 1 and self._zone[1][1:3].all() == 1:
+            # self._tipo = Tipo.LS
+            self._tipo = Tipo.Z
             return
         elif self._zone[0][1] == 1 and self._zone[1][0:3].all() == 1:
             self._tipo = Tipo.T
             return
         elif self._zone[0][2] == 1 and self._zone[1][0:3].all() == 1:
-            self._tipo = Tipo.RG
-        elif self._zone[0][0:2].all() == 1 and self._zone[1][1:3].all() == 1:
-            self._tipo = Tipo.LG
+            # self._tipo = Tipo.RG
+            self._tipo = Tipo.LDER
+        elif self._zone[0][0] == 1 and self._zone[1][1:3].all() == 1:
+            # self._tipo = Tipo.LG
+            self._tipo = Tipo.LIZ
             return
         elif self._zone[0][1:3].all() == 1 and self._zone[1][1:3].all() == 1:
             self._tipo = Tipo.Sq

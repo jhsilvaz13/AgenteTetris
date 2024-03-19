@@ -4,11 +4,15 @@ import win32gui, win32ui, win32con
 class WindowCapture:
 
     # properties
-    w = 164
-    h = 362
+    # w = 164
+    # h = 362
+    w = 170
+    h = 374
     hwnd = None
-    cropped_x = 398
-    cropped_y = 344
+    # cropped_x = 398
+    # cropped_y = 344
+    cropped_x = 395
+    cropped_y = 398
     offset_x = 0
     offset_y = 0
 
@@ -68,13 +72,13 @@ class WindowCapture:
         return img
     
     def get_img_properties(self, ndarray: np.ndarray) -> None:
-        print("""
-        IMAGE PROPERTIES
-        shape: {}
-        dtype: {}
-        min: {}
-        max: {}
-        """.format(ndarray.shape, 
-                   ndarray.dtype, 
-                   ndarray.min(), ndarray.max()))
+        # print("""
+        # IMAGE PROPERTIES
+        # shape: {}
+        # dtype: {}
+        # min: {}
+        # max: {}
+        # """.format(ndarray.shape, 
+        #            ndarray.dtype, 
+        #            ndarray.min(), ndarray.max()))
         return None
