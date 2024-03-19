@@ -45,7 +45,7 @@ class Tetris:
                     aggregate_height += len(grid) - row
         return aggregate_height
     
-    def holes(self) -> None:
+    def holes(self) -> int:
         # Calculate number of holes
         holes = 0
         grid = self._tablero.get_matrix()
@@ -57,6 +57,26 @@ class Tetris:
                 if found_first_one and grid[row][column] == 0:
                     holes += 1
         return holes
+    
+    def bumpiness(self) -> int:
+        # Calculate bumpiness
+        bumpiness = 0
+        previous_height = 0
+        grid = self._tablero.get_matrix()
+        for column in range(10):
+            found_first_one = False
+            for row in range(8, 22):
+                if grid[row][column] and not found_first_one:
+                    found_first_one = True
+                    height = len(grid) - row
+                    if column > 0:
+                        bumpiness += abs(height - previous_height)
+                    previous_height = height
+            if not found_first_one:
+                if column > 0:
+                    bumpiness += previous_height
+                previous_height = 0
+        return bumpiness
     
     def gwt_current_tetramino(self) -> np.ndarray:
         """

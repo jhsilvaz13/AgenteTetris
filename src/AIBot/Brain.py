@@ -117,17 +117,6 @@ class Brain:
                       self.consholes * holes + self.consbump * bumpiness
         return state_score
 
-    def aggregate_height(self, grid):
-        # Calculate aggregate height
-        aggregate_height = 0
-        for j in range(len(grid[0])):
-            found_first_one = False
-            for i in range(len(grid)):
-                if grid[i][j] and not found_first_one:
-                    found_first_one = True
-                    aggregate_height += len(grid) - i
-        return aggregate_height
-
     def complete_lines(self, grid):
         # Calculate number complete lines
         complete_lines = 0
@@ -136,37 +125,6 @@ class Brain:
             if full_row:
                 complete_lines += 1
         return complete_lines
-
-    def holes(self, grid):
-        # Calculate number of holes
-        holes = 0
-        for j in range(len(grid[0])):
-            found_first_one = False
-            for i in range(len(grid)):
-                if grid[i][j] and not found_first_one:
-                    found_first_one = True
-                if found_first_one and grid[i][j] == 0:
-                    holes += 1
-        return holes
-
-    def bumpiness(self, grid):
-        # Calculate bumpiness
-        bumpiness = 0
-        previous_height = 0
-        for j in range(len(grid[0])):
-            found_first_one = False
-            for i in range(len(grid)):
-                if grid[i][j] and not found_first_one:
-                    found_first_one = True
-                    height = len(grid) - i
-                    if j > 0:
-                        bumpiness += abs(height - previous_height)
-                    previous_height = height
-            if not found_first_one:
-                if j > 0:
-                    bumpiness += previous_height
-                previous_height = 0
-        return bumpiness
 
     def select_move_from_current_selected_move(self, state):
         # Pick next move for piece to go along current trajectory

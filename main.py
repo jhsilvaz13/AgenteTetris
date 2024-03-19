@@ -30,11 +30,13 @@ if __name__ == "__main__":
         actual_piece = game.get_current_tetramino_type()
         aggregate_height = game.aggregate_height()
         holes = game.holes()
+        bumpiness = game.bumpiness()
         
         if (actual_piece != None):
             print("The current tetramino is: {}".format(actual_piece))
             print("The current aggregate height is: {}".format(aggregate_height))
             print("The current number of holes is: {}".format(holes))
+            print("The current bumpiness is: {}".format(bumpiness))
 
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)
