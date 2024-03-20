@@ -91,10 +91,10 @@ class Tetris:
     def complete_lines(self, grid:np.ndarray):
         # Calculate number complete lines
         complete_lines = 0
-        for i in range(len(grid)):
-            full_row = all(grid[i][j] for j in range(len(grid[i])))
-            if full_row:
+        for i in range(20):
+            if (sum(grid[i]) == 10):
                 complete_lines += 1
+        print(complete_lines)
         return complete_lines
     
     def get_current_tetramino(self) -> Pieza:
@@ -198,7 +198,9 @@ class Tetris:
                     # Use that as the next general trajectory
                     self.current_selected_move = move
             print(self.current_selected_move)
+            self.move()
         # Pick move in movement frame from current trajectory
+    
     def move(self):
         # Move to the selected move
         # First rotate to the selected rotation
@@ -212,6 +214,7 @@ class Tetris:
         else:
             for i in range(-resta):
                 pyautogui.press('left')
+        pyautogui.press('space')
                 
     def print_matriz(self, matrix:np.ndarray) -> None:
         print("--------------------")
