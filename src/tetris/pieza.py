@@ -27,7 +27,7 @@ class Pieza:
         Extraer de la zona el tipo de pieza que corresponde.
         Dependiendo de la zona se puede saber que tipo de pieza es.
         """
-        if self._zone[0][0:4].all() == 1:
+        if self._zone[0][0:4].all() == 1 or self._zone[1][0:4].all() == 1:
             # self._tipo = Tipo.I
             self._tipo = Tipo.Linea
             return
@@ -60,7 +60,6 @@ class Pieza:
         Rota la pieza.
         """
 
-
     def getpiecerotation(self, currentrot) -> tuple:
         self._orientacion = currentrot
         if (self._tipo == Tipo.Linea):
@@ -87,7 +86,7 @@ class Pieza:
             ficha, firsti = self.getLIZrotation(currentrot)
             return ficha, firsti
         
-        if (self._tipo == Tipo.S):
+        if (self._tipo == Tipo.Sq):
             firsti = 4
             ficha = np.array([[1, 1], 
                               [1, 1]])
@@ -97,7 +96,7 @@ class Pieza:
     def getlinearotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
-            ficha = np.array([1,1,1,1])
+            ficha = np.array([[1,1,1,1]])
             return ficha, firsti
         
         elif (currentrot == 1): # 90 Degrees
@@ -110,7 +109,7 @@ class Pieza:
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
-            ficha = np.array([1,1,1,1])
+            ficha = np.array([[1,1,1,1]])
             return ficha, firsti
         
         elif (currentrot == 3): # 270 Degrees

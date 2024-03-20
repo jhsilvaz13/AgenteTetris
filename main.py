@@ -2,8 +2,7 @@ from src.video.video import threshold_image, resize_image, to_matrix
 from src.video.boardcapture import WindowCapture as b_Cap
 from src.video.nextcapture import WindowCapture as n_Cap
 from src.tetris.tetris import Tetris
-from src.AIBot.Brain import Brain
-import cv2 as cv
+import time
 if __name__ == "__main__":
     boardcap = b_Cap()
     nextcap = n_Cap()
@@ -20,13 +19,12 @@ if __name__ == "__main__":
         # Esto captura el tablero del juego
         board = boardcap.get_screenshot()
         board = threshold_image(board)
-        cv.imshow('board', board)
-        cv.waitKey(0)
         board = resize_image(board, 10, 22)
         board = to_matrix(board)
 
         game =  Tetris(board)
         game.process_current_state()
+        time.sleep(0.1)
         
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)

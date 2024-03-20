@@ -5,6 +5,7 @@ import numpy as np
 from src.tetris.tablero import Board
 from src.tetris.pieza import Pieza
 from src.tetris.tipo_pieza import Tipo
+import pyautogui
 
 class Tetris:
     """ Representa un juego de tetris con todos sus componentes."""
@@ -47,7 +48,7 @@ class Tetris:
         aggregate_height = 0
         for column in range(10):
             found_first_one = False
-            for row in range(2, 22):
+            for row in range(0, 20):
                 if grid[row][column] and not found_first_one:
                     found_first_one = True
                     aggregate_height += len(grid) - row
@@ -59,7 +60,7 @@ class Tetris:
         grid = self._tablero.get_matrix()
         for column in range(10):
             found_first_one = False
-            for row in range(2, 22):
+            for row in range(0, 20):
                 if grid[row][column] and not found_first_one:
                     found_first_one = True
                 if found_first_one and grid[row][column] == 0:
@@ -74,7 +75,7 @@ class Tetris:
         grid = self._tablero.get_matrix()
         for column in range(10):
             found_first_one = False
-            for row in range(2, 22):
+            for row in range(0, 20):
                 if grid[row][column] and not found_first_one:
                     found_first_one = True
                     height = len(grid) - row
@@ -175,13 +176,15 @@ class Tetris:
                     current_state, rotated_shape, i_position, j_position)
                 # Score this position
                 possible_final_state_score = self.score_state(possible_final_state)
+
                 possible_moves.append({"rotation_mode": rotacion,
-                                       "i": i_position, "j": j_position,
+                                       "j_first": first_col, "j": j_position,
                                        "score": possible_final_state_score})
+                
+        return possible_moves
     
     def process_current_state(self): #20x10
         current_state = self.get_tablero()[2:22,:]
-        print(current_state)
         # Check if there's a new piece in the board
         if self.get_current_tetramino_type() != None:
             # Analyze all possible moves and score them
@@ -194,12 +197,27 @@ class Tetris:
                     self.highest_score = move["score"]
                     # Use that as the next general trajectory
                     self.current_selected_move = move
+            print(self.current_selected_move)
         # Pick move in movement frame from current trajectory
-            print("Seleceted move:", self.current_selected_move)
-    
+    def move(self):
+        # Move to the selected move
+        # First rotate to the selected rotation
+        for i in range(self.current_selected_move["rotation_mode"]):
+            pyautogui.press('altright')
+        # Now move to the selected column
+        resta= self.current_selected_move["j"] - self.current_selected_move["j_first"]
+        if resta > 0:
+            for i in range(resta):
+                pyautogui.press('right')
+        else:
+            for i in range(-resta):
+                pyautogui.press('left')
+                
     def print_matriz(self, matrix:np.ndarray) -> None:
+        print("--------------------")
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 print(matrix[i][j], end=" ")
             print()
         return None
+        print("--------------------")
