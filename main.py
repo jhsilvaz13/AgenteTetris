@@ -26,7 +26,6 @@ if __name__ == "__main__":
 
         game =  Tetris(board)
         game.process_current_state()
-        time.sleep (0.4)
         
         """
         # Esto captura la siguiente pieza(solo 1 la más proxima)

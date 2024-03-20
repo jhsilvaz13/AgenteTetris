@@ -1,5 +1,6 @@
 import numpy as np
 from src.tetris.pieza import Pieza
+from src.tetris.tetris import Tetris
 
 def blocks_below(shape, i_position, j_position, grid):
     # Check if there are blocks below or if it can keep going down
@@ -85,4 +86,10 @@ if __name__=="__main__":
             [1, 1, 0, 0],
             [0, 1, 1, 0],]
         ))
+    print("""
+        Bumpiness: {}
+        Complete lines: {}
+        Holes: {}
+        Aggregate height: {}
+        """.format(Tetris.bumpiness(grid), Tetris.complete_lines(grid), Tetris.holes(grid), Tetris.aggregate_height(grid)))
     score_all_possible_moves(np.array(grid), current_shape)

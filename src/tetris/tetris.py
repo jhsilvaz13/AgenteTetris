@@ -42,7 +42,6 @@ class Tetris:
         """
         print(self._tablero.get_matrix())
         return None
-    
     def aggregate_height(self, grid:np.ndarray) -> int:
         # Calculate aggregate height
         aggregate_height = 0
@@ -53,11 +52,9 @@ class Tetris:
                     found_first_one = True
                     aggregate_height += len(grid) - row
         return aggregate_height
-    
     def holes(self, grid:np.ndarray) -> int:
         # Calculate number of holes
         holes = 0
-        grid = self._tablero.get_matrix()
         for column in range(10):
             found_first_one = False
             for row in range(0, 20):
@@ -66,13 +63,11 @@ class Tetris:
                 if found_first_one and grid[row][column] == 0:
                     holes += 1
         return holes
-    
     def bumpiness(self, grid:np.ndarray) -> int:
 
         # Calculate bumpiness
         bumpiness = 0
         previous_height = 0
-        grid = self._tablero.get_matrix()
         for column in range(10):
             found_first_one = False
             for row in range(0, 20):
@@ -87,14 +82,13 @@ class Tetris:
                     bumpiness += previous_height
                 previous_height = 0
         return bumpiness
-    
     def complete_lines(self, grid:np.ndarray):
         # Calculate number complete lines
         complete_lines = 0
         for i in range(20):
-            if (sum(grid[i]) == 10):
+            full_row = all(grid[i][j] for j in range(len(grid[i])))
+            if full_row:
                 complete_lines += 1
-        print(complete_lines)
         return complete_lines
     
     def get_current_tetramino(self) -> Pieza:
@@ -192,14 +186,17 @@ class Tetris:
             # Pick best one
             self.highest_score = self.possible_moves_scored[0]["score"]
             self.current_selected_move = self.possible_moves_scored[0]
+            """
             for move in self.possible_moves_scored:
                 if move["score"] > self.highest_score:
                     self.highest_score = move["score"]
                     # Use that as the next general trajectory
                     self.current_selected_move = move
-            print(self.current_selected_move)
+            """
+            self.current_selected_move = max(self.possible_moves_scored, key=lambda move: move["score"])
+            self.highest_score = self.current_selected_move["score"]
             self.move()
-        # Pick move in movement frame from current trajectory
+        # Pic k move in movement frame from current trajectory
     
     def move(self):
         # Move to the selected move
@@ -207,6 +204,8 @@ class Tetris:
         for i in range(self.current_selected_move["rotation_mode"]):
             pyautogui.press('altright')
         # Now move to the selected column
+        print("J: ", self.current_selected_move["j"])
+        print("J_FIRST: ", self.current_selected_move["j_first"])
         resta= self.current_selected_move["j"] - self.current_selected_move["j_first"]
         if resta > 0:
             for i in range(resta):
