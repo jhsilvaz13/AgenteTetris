@@ -1,8 +1,11 @@
 # Brain
 # Analyses current game state and provides best move using params
+import numpy as np
+from src.tetris.tetris import Tetris
+from src.tetris.pieza import Pieza
 
 class Brain:
-    def __init__(self):
+    def __init__(self, tetris: Tetris):
         # Initialize brain with params
         self.previous_piece_index = None
         self.previous_move = None
@@ -14,14 +17,20 @@ class Brain:
         self.current_selected_move = None
         self.possible_moves_scored = None
         self.highest_score = None
+        self.current_state: Tetris = tetris
+        self.current_shape: Pieza = None
+        self.current_board:np.ndarray = tetris.get_tablero()[2:-1,:]#20x10
+        self.process_current_state()
 
-    def process_current_state(self, current_state):
+    def process_current_state(self):
         # Receives current state to predict best move
         new_move = None
+        self.current_shape = self.current_state.get_current_tetramino()
         # Check if there's a new piece in the board
-        if self.previous_piece_index != current_state["shape_index"]:
+        if self.current_state.get_current_tetramino_type() != None:
+            self.current_shape = self.current_state.get_current_tetramino()
             # Analyze all possible moves and score them
-            self.possible_moves_scored = self.score_all_possible_moves(current_state)
+            self.possible_moves_scored = self.score_all_possible_moves()
             # Pick best one
             self.highest_score = self.possible_moves_scored[0]["score"]
             self.current_selected_move = self.possible_moves_scored[0]
@@ -31,26 +40,30 @@ class Brain:
                     # Use that as the next general trajectory
                     self.current_selected_move = move
         # Pick move in movement frame from current trajectory
-        new_move = self.select_move_from_current_selected_move(current_state)
-        self.previous_piece_index = current_state["shape_index"]
+        new_move = self.select_move_from_current_selected_move(self.current_state)
+        #self.previous_piece_index = current_state["shape_index"]
         return new_move
 
-    def score_all_possible_moves(self, current_state):
+    def score_all_possible_moves(self):
         # Analyze all possible moves
         possible_moves = []
         # First check all possible rotations
         for rotation_mode in range(4):
-            # Rotate to this rotation
-            rotated_shape = self.rotate_shape(current_state["shape"], rotation_mode)
+            #  la funcion getpiecerotation es de la clase Pieza
+            # retorna una matriz con la pieza rotada y la posicion de 
+            # la primera columna de la pieza
+            print(self.current_shape.getpiecerotation(rotation_mode))
+            rotated_shape = self.current_shape.getpiecerotation(rotation_mode)[0]
+            first_col = self.current_shape.getfirstcol()[1]
             # Now check all possible positions for this rotation
-            for j_position in range(0, len(current_state["grid"][0]) - len(rotated_shape[0]) + 1):
-                i_position = current_state["shape_i"]
-                while not self.blocks_below(rotated_shape, i_position, j_position, current_state["grid"]):
+            for j_position in range(0, 10 - len(rotated_shape[0]) + 1):
+                i_position = first_col
+                while not self.blocks_below(rotated_shape, i_position, j_position, (self.current_board)):
                     # Make the block go down until it stops
                     i_position += 1
                 # Create possible grid with this new position
                 possible_final_state = self.create_final_state(
-                    current_state["grid"], rotated_shape, i_position, j_position)
+                    self.current_board, rotated_shape, i_position, j_position)
                 # Score this position
                 possible_final_state_score = self.score_state(possible_final_state)
                 possible_moves.append({"rotation_mode": rotation_mode,
@@ -107,12 +120,16 @@ class Brain:
 
         return new_full_grid
 
-    def score_state(self, grid):
+    def score_state(self, grid: np.ndarray):
         # Use formula to score this possible grid
-        aggregate_height = self.aggregate_height(grid)
-        complete_lines = self.complete_lines(grid)
-        holes = self.holes(grid)
-        bumpiness = self.bumpiness(grid)
+        aggregate_height = grid.aggregate_height()
+        """
+        TO DO: Implement the rest of the scoring functions
+        """
+        #complete_lines = grid.complete_lines()
+        complete_lines = 0
+        holes = grid.holes()
+        bumpiness = grid.bumpiness()
         state_score = self.consagg * aggregate_height + self.conslines * complete_lines + \
                       self.consholes * holes + self.consbump * bumpiness
         return state_score
@@ -129,14 +146,18 @@ class Brain:
     def select_move_from_current_selected_move(self, state):
         # Pick next move for piece to go along current trajectory
         # If it can rotate and it's required for the trajectory, then rotate
-        if state["shape_rotation"] != self.current_selected_move["rotation_mode"]:
-            if self.shape_can_rotate(state["shape"], state["grid"],
-                                     state["shape_i"], state["shape_j"]):
+        #if state["shape_rotation"] != self.current_selected_move["rotation_mode"]:
+        if self.current_shape.get_orientacion() != self.current_selected_move["rotation_mode"]:
+            #if self.shape_can_rotate(state["shape"], state["grid"],
+            #                        state["shape_i"], state["shape_j"]):
+            
+            if self.shape_can_rotate(self.current_shape.getpiecerotation()[0], self.current_board,
+                                    20, 10):
                 return 1
         # Else, if it's not on top of where the next move is, then go that way
-        if state["shape_j"] < self.current_selected_move["j"]:
+        if 20 < self.current_selected_move["j"]:
             return 2
-        if state["shape_j"] > self.current_selected_move["j"]:
+        if 10 > self.current_selected_move["j"]:
             return 3
         return 4
 
@@ -150,3 +171,4 @@ class Brain:
                          grid[i + i_position][j + j_position]):
                     return False
         return True
+

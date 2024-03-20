@@ -15,6 +15,7 @@ class Pieza:
             Corresponde a la mitad superior del tablero.
             Esta es de tamaño 2x10.
         """
+
         self._zone: np.ndarray = zone
         self._tipo: Tipo = None
         self._orientacion = 0
@@ -54,32 +55,39 @@ class Pieza:
             self._tipo = None
             return
 
-    def getpiecerotation(self, currentrot, tipo) -> np.ndarray:
-        if (tipo == Tipo.Linea):
+    def rotate(self):
+        """
+        Rota la pieza.
+        """
+
+
+    def getpiecerotation(self, currentrot) -> tuple:
+        self._orientacion = currentrot
+        if (self._tipo == Tipo.Linea):
             ficha, firsti = self.getlinearotation(currentrot)
             return ficha, firsti
         
-        if (tipo == Tipo.S):
-            ficha = self.getSrotation(currentrot)
+        if (self._tipo == Tipo.S):
+            ficha, firsti= self.getSrotation(currentrot)
             return ficha, firsti
         
-        if (tipo == Tipo.Z):
+        if (self._tipo == Tipo.Z):
             ficha, firsti = self.getZrotation(currentrot)
             return ficha, firsti
         
-        if (tipo == Tipo.T):
+        if (self._tipo == Tipo.T):
             ficha, firsti = self.getTrotation(currentrot)
             return ficha, firsti
         
-        if (tipo == Tipo.LDER):
+        if (self._tipo == Tipo.LDER):
             ficha, firsti = self.getLDERrotation(currentrot)
             return ficha, firsti
         
-        if (tipo == Tipo.LIZ):
+        if (self._tipo == Tipo.LIZ):
             ficha, firsti = self.getLIZrotation(currentrot)
             return ficha, firsti
         
-        if (tipo == Tipo.S):
+        if (self._tipo == Tipo.S):
             firsti = 4
             ficha = np.array([[1, 1], 
                               [1, 1]])
@@ -150,6 +158,7 @@ class Pieza:
             return ficha, firsti
         
         elif (currentrot == 1): # 90 Degrees
+            
             firsti = 4
             ficha = np.array([[0,1], 
                               [1,1],
