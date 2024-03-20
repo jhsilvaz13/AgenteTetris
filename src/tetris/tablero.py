@@ -27,9 +27,9 @@ class Board:
             for j in range(self.width):
                 if self._matrix[i][j] == 1:
                     return tuple(i,j)
+                
     def get_zone_tetramino(self,) -> numpy.ndarray:
         """
         Retorna la zona de la matriz que corresponde a la pieza
         """
         return self._matrix.matrix[0:2,3:7]
-            

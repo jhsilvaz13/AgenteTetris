@@ -19,6 +19,7 @@ class Pieza:
         self._tipo: Tipo = None
         self._orientacion = 0
         self.create_piece()
+        
 
     def create_piece(self):
         """
@@ -53,6 +54,205 @@ class Pieza:
             self._tipo = None
             return
 
+    def getpiecerotation(self, currentrot, tipo) -> np.ndarray:
+        if (tipo == Tipo.Linea):
+            ficha, firsti = self.getlinearotation(currentrot)
+            return ficha, firsti
+        
+        if (tipo == Tipo.S):
+            ficha = self.getSrotation(currentrot)
+            return ficha, firsti
+        
+        if (tipo == Tipo.Z):
+            ficha, firsti = self.getZrotation(currentrot)
+            return ficha, firsti
+        
+        if (tipo == Tipo.T):
+            ficha, firsti = self.getTrotation(currentrot)
+            return ficha, firsti
+        
+        if (tipo == Tipo.LDER):
+            ficha, firsti = self.getLDERrotation(currentrot)
+            return ficha, firsti
+        
+        if (tipo == Tipo.LIZ):
+            ficha, firsti = self.getLIZrotation(currentrot)
+            return ficha, firsti
+        
+        if (tipo == Tipo.S):
+            firsti = 4
+            ficha = np.array([[1, 1], 
+                              [1, 1]])
+            return ficha, firsti
+    
+    # LINEA ROTACIONES
+    def getlinearotation(self, currentrot):
+        if (currentrot == 0): # 0 Degrees
+            firsti = 3
+            ficha = np.array([1,1,1,1])
+            return ficha, firsti
+        
+        elif (currentrot == 1): # 90 Degrees
+            firsti = 5
+            ficha = np.array([[1], 
+                              [1],
+                              [1],
+                              [1]])
+            return ficha, firsti
+        
+        elif (currentrot == 2): # 180 Degrees
+            firsti = 3
+            ficha = np.array([1,1,1,1])
+            return ficha, firsti
+        
+        elif (currentrot == 3): # 270 Degrees
+            firsti = 4
+            ficha = np.array([[1], 
+                              [1],
+                              [1],
+                              [1]])
+            return ficha, firsti
+    
+    # S ROTACIONES
+    def getSrotation(self, currentrot):
+        if (currentrot == 0): # 0 Degrees
+            firsti = 3
+            ficha = np.array([[0,1,1], 
+                              [1,1,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 1): # 90 Degrees
+            firsti = 4
+            ficha = np.array([[1,0], 
+                              [1,1],
+                              [0,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 2): # 180 Degrees
+            firsti = 3
+            ficha = np.array([[0,1,1], 
+                              [1,1,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 3): # 270 Degrees
+            firsti = 3
+            ficha = np.array([[1,0], 
+                              [1,1],
+                              [0,1]])
+            return ficha, firsti
+        
+    # Z ROTACIONES
+    def getZrotation(self, currentrot):
+        if (currentrot == 0): # 0 Degrees
+            firsti = 3
+            ficha = np.array([[1,1,0], 
+                              [0,1,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 1): # 90 Degrees
+            firsti = 4
+            ficha = np.array([[0,1], 
+                              [1,1],
+                              [1,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 2): # 180 Degrees
+            firsti = 3
+            ficha = np.array([[1,1,0], 
+                              [0,1,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 3): # 270 Degrees
+            firsti = 3
+            ficha = np.array([[0,1], 
+                              [1,1],
+                              [1,0]])
+            return ficha, firsti
+        
+    # T ROTACIONES
+    def getTrotation(self, currentrot):
+        if (currentrot == 0): # 0 Degrees
+            firsti = 3
+            ficha = np.array([[0,1,0], 
+                              [1,1,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 1): # 90 Degrees
+            firsti = 4
+            ficha = np.array([[1,0], 
+                              [1,1],
+                              [1,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 2): # 180 Degrees
+            firsti = 3
+            ficha = np.array([[1,1,1], 
+                              [0,1,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 3): # 270 Degrees
+            firsti = 3
+            ficha = np.array([[0,1], 
+                              [1,1],
+                              [0,1]])
+            return ficha, firsti
+        
+    # LDER ROTACIONES
+    def getLDERrotation(self, currentrot):
+        if (currentrot == 0): # 0 Degrees
+            firsti = 3
+            ficha = np.array([[0,0,1], 
+                              [1,1,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 1): # 90 Degrees
+            firsti = 4
+            ficha = np.array([[1,0], 
+                              [1,0],
+                              [1,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 2): # 180 Degrees
+            firsti = 3
+            ficha = np.array([[1,1,1], 
+                              [1,0,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 3): # 270 Degrees
+            firsti = 3
+            ficha = np.array([[1,1], 
+                              [0,1],
+                              [0,1]])
+            return ficha, firsti
+        
+    # LIZ ROTACIONES
+    def getLIZrotation(self, currentrot):
+        if (currentrot == 0): # 0 Degrees
+            firsti = 3
+            ficha = np.array([[1,0,0], 
+                              [1,1,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 1): # 90 Degrees
+            firsti = 4
+            ficha = np.array([[1,1], 
+                              [1,0],
+                              [1,0]])
+            return ficha, firsti
+        
+        elif (currentrot == 2): # 180 Degrees
+            firsti = 3
+            ficha = np.array([[1,1,1], 
+                              [0,0,1]])
+            return ficha, firsti
+        
+        elif (currentrot == 3): # 270 Degrees
+            firsti = 3
+            ficha = np.array([[0,1], 
+                              [0,1],
+                              [1,1]])
+            return ficha, firsti
+                       
     def get_zone(self) -> np.ndarray:
         """
         Regresa la zona de la pieza.
@@ -111,17 +311,6 @@ class Pieza:
         p3 = self._casillas[2].get_punto().clona()
         p4 = self._casillas[3].get_punto().clona()
         return [p1, p2, p3, p4]
-
-    def rota(self):
-        """
-        Realiza la rotación de la pieza incluyendo las casillas. 
-        """
-        self._orientacion = (self._orientacion + 90) % 360
-        puntos = rota(self._tipo, self._casillas)
-        i = 0
-        while i < 4:
-            self._casillas[i].set_punto(puntos[i])
-            i = i + 1
 
     def mueve_derecha(self):
         """
