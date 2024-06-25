@@ -11,7 +11,8 @@ def resize_image(image:np.ndarray, width:int, height:int) -> np.ndarray:
 
 def threshold_image(image: np.ndarray) -> np.ndarray:
     # converrit la imagen a escala de grises
-    gray = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140])
+    # gray = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140])
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     gray = gray.astype(np.uint8)
     # aplicar binary thresholding a la imagen
     _, thresh = cv.threshold(gray, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)

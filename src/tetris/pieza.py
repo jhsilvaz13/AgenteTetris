@@ -15,13 +15,11 @@ class Pieza:
             Corresponde a la mitad superior del tablero.
             Esta es de tamaño 2x10.
         """
-
         self._zone: np.ndarray = zone
         self._tipo: Tipo = None
         self._orientacion = 0
         self.create_piece()
         
-
     def create_piece(self):
         """
         Extraer de la zona el tipo de pieza que corresponde.
@@ -63,203 +61,227 @@ class Pieza:
     def getpiecerotation(self, currentrot) -> tuple:
         self._orientacion = currentrot
         if (self._tipo == Tipo.Linea):
-            ficha, firsti = self.getlinearotation(currentrot)
-            return ficha, firsti
+            ficha, firsti, lasti = self.getlinearotation(currentrot)
+            return ficha, firsti, lasti
         
         if (self._tipo == Tipo.S):
-            ficha, firsti= self.getSrotation(currentrot)
-            return ficha, firsti
+            ficha, firsti, lasti = self.getSrotation(currentrot)
+            return ficha, firsti, lasti
         
         if (self._tipo == Tipo.Z):
-            ficha, firsti = self.getZrotation(currentrot)
-            return ficha, firsti
+            ficha, firsti, lasti = self.getZrotation(currentrot)
+            return ficha, firsti, lasti
         
         if (self._tipo == Tipo.T):
-            ficha, firsti = self.getTrotation(currentrot)
-            return ficha, firsti
+            ficha, firsti, lasti = self.getTrotation(currentrot)
+            return ficha, firsti, lasti
         
         if (self._tipo == Tipo.LDER):
-            ficha, firsti = self.getLDERrotation(currentrot)
-            return ficha, firsti
+            ficha, firsti, lasti = self.getLDERrotation(currentrot)
+            return ficha, firsti, lasti
         
         if (self._tipo == Tipo.LIZ):
-            ficha, firsti = self.getLIZrotation(currentrot)
-            return ficha, firsti
+            ficha, firsti, lasti = self.getLIZrotation(currentrot)
+            return ficha, firsti, lasti
         
         if (self._tipo == Tipo.Sq):
             firsti = 4
+            lasti = 5
             ficha = np.array([[1, 1], 
                               [1, 1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
     
     # LINEA ROTACIONES
     def getlinearotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
+            lasti = 6
             ficha = np.array([[1,1,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 1): # 90 Degrees
             firsti = 5
+            lasti = 5
             ficha = np.array([[1], 
                               [1],
                               [1],
                               [1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
+            lasti = 6
             ficha = np.array([[1,1,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 3): # 270 Degrees
             firsti = 4
+            lasti = 4
             ficha = np.array([[1], 
                               [1],
                               [1],
                               [1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
     
     # S ROTACIONES
     def getSrotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[0,1,1], 
                               [1,1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 1): # 90 Degrees
             firsti = 4
+            lasti = 5
             ficha = np.array([[1,0], 
                               [1,1],
                               [0,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[0,1,1], 
                               [1,1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 3): # 270 Degrees
             firsti = 3
+            lasti = 4
             ficha = np.array([[1,0], 
                               [1,1],
                               [0,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
     # Z ROTACIONES
     def getZrotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[1,1,0], 
                               [0,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 1): # 90 Degrees
-            
             firsti = 4
+            lasti = 5
             ficha = np.array([[0,1], 
                               [1,1],
                               [1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[1,1,0], 
                               [0,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 3): # 270 Degrees
             firsti = 3
+            lasti = 4
             ficha = np.array([[0,1], 
                               [1,1],
                               [1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
     # T ROTACIONES
     def getTrotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[0,1,0], 
                               [1,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 1): # 90 Degrees
             firsti = 4
+            lasti = 5 
             ficha = np.array([[1,0], 
                               [1,1],
                               [1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[1,1,1], 
                               [0,1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 3): # 270 Degrees
             firsti = 3
+            lasti = 4
             ficha = np.array([[0,1], 
                               [1,1],
                               [0,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
     # LDER ROTACIONES
     def getLDERrotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[0,0,1], 
                               [1,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 1): # 90 Degrees
             firsti = 4
+            lasti = 5
             ficha = np.array([[1,0], 
                               [1,0],
                               [1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[1,1,1], 
                               [1,0,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 3): # 270 Degrees
             firsti = 3
+            lasti = 4
             ficha = np.array([[1,1], 
                               [0,1],
                               [0,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
     # LIZ ROTACIONES
     def getLIZrotation(self, currentrot):
         if (currentrot == 0): # 0 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[1,0,0], 
                               [1,1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 1): # 90 Degrees
             firsti = 4
+            lasti = 5
             ficha = np.array([[1,1], 
                               [1,0],
                               [1,0]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 2): # 180 Degrees
             firsti = 3
+            lasti = 5
             ficha = np.array([[1,1,1], 
                               [0,0,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
         
         elif (currentrot == 3): # 270 Degrees
             firsti = 3
+            lasti = 4
             ficha = np.array([[0,1], 
                               [0,1],
                               [1,1]])
-            return ficha, firsti
+            return ficha, firsti, lasti
                        
     def get_zone(self) -> np.ndarray:
         """

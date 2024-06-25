@@ -1,11 +1,9 @@
-#from abejas_tetris.tetris.tablero import *
-#from abejas_tetris.tetris.indexer import *
-#from abejas_tetris.my_random import get_random, get_randrange, get_randbits
 import numpy as np
 from src.tetris.tablero import Board
 from src.tetris.pieza import Pieza
 from src.tetris.tipo_pieza import Tipo
 import pyautogui
+import time
 
 class Tetris:
     """ Representa un juego de tetris con todos sus componentes."""
@@ -15,15 +13,11 @@ class Tetris:
         ----------
         tablero : Tablero 
                 Es un tablero por si el objeto es clonado. 22x10
-        next : np.ndarray
-                Es la siguiente pieza a jugar. 3x5
-        hold : np.ndarray
-                Es la pieza que se tiene en hold. 3x5
         """
-        self.consagg = -0.458507
-        self.conslines = 0.429457
-        self.consholes = -0.454487
-        self.consbump = -0.169442
+        self.consagg = -0.458507 # -0.510066        
+        self.conslines =  0.429457 # 0.760666       
+        self.consholes = -0.454487 # -0.35663            
+        self.consbump = -0.169442 # -0.184483       
         self.score = None
         self.current_selected_move = None
         self.possible_moves_scored = None
@@ -33,8 +27,6 @@ class Tetris:
             exception = Exception("No se puede crear un juego sin un tablero")
             raise exception
         self._tablero = Board(matrix)
-        self._next = next
-        self._hold = hold
 
     def print_board(self) -> None:
         """
@@ -42,6 +34,7 @@ class Tetris:
         """
         print(self._tablero.get_matrix())
         return None
+    
     def aggregate_height(self, grid:np.ndarray) -> int:
         # Calculate aggregate height
         aggregate_height = 0
@@ -52,6 +45,7 @@ class Tetris:
                     found_first_one = True
                     aggregate_height += len(grid) - row
         return aggregate_height
+    
     def holes(self, grid:np.ndarray) -> int:
         # Calculate number of holes
         holes = 0
@@ -63,8 +57,8 @@ class Tetris:
                 if found_first_one and grid[row][column] == 0:
                     holes += 1
         return holes
+    
     def bumpiness(self, grid:np.ndarray) -> int:
-
         # Calculate bumpiness
         bumpiness = 0
         previous_height = 0
@@ -82,6 +76,7 @@ class Tetris:
                     bumpiness += previous_height
                 previous_height = 0
         return bumpiness
+    
     def complete_lines(self, grid:np.ndarray):
         # Calculate number complete lines
         complete_lines = 0
@@ -146,8 +141,8 @@ class Tetris:
         complete_lines = self.complete_lines(grid)
         holes = self.holes(grid)
         bumpiness = self.bumpiness(grid)
-        state_score = self.consagg * aggregate_height + self.conslines * complete_lines + \
-                      self.consholes * holes + self.consbump * bumpiness
+        state_score = (self.consagg * aggregate_height) + (self.conslines * complete_lines) + \
+                      (self.consholes * holes) + (self.consbump * bumpiness)
         return state_score
     
     def score_all_possible_moves(self, current_state:np.ndarray,) -> list: #Current state: 20x10
@@ -157,7 +152,7 @@ class Tetris:
         # First check all possible rotations
         for rotacion in range(4):
             # Rotate to this rotation
-            rotated_shape, first_col = current_shape.getpiecerotation(rotacion)
+            rotated_shape, first_col, last_col = current_shape.getpiecerotation(rotacion)
             #print(rotated_shape)
             # Now check all possible positions for this rotation
             for j_position in range(0, len(current_state[0]) - len(rotated_shape[0]) + 1):
@@ -171,8 +166,8 @@ class Tetris:
                 # Score this position
                 possible_final_state_score = self.score_state(possible_final_state)
 
-                possible_moves.append({"rotation_mode": rotacion,
-                                       "j_first": first_col, "j": j_position,
+                possible_moves.append({"rotation_mode": rotacion, "j_first": first_col,
+                                       "j_last": last_col, "j": j_position, 
                                        "score": possible_final_state_score})
                 
         return possible_moves
@@ -186,40 +181,96 @@ class Tetris:
             # Pick best one
             self.highest_score = self.possible_moves_scored[0]["score"]
             self.current_selected_move = self.possible_moves_scored[0]
-            """
-            for move in self.possible_moves_scored:
-                if move["score"] > self.highest_score:
-                    self.highest_score = move["score"]
-                    # Use that as the next general trajectory
-                    self.current_selected_move = move
-            """
             self.current_selected_move = max(self.possible_moves_scored, key=lambda move: move["score"])
             self.highest_score = self.current_selected_move["score"]
+            # Call function in order to actually move
             self.move()
-        # Pic k move in movement frame from current trajectory
-    
+
+    # Move to the selected move    
     def move(self):
-        # Move to the selected move
-        # First rotate to the selected rotation
-        for i in range(self.current_selected_move["rotation_mode"]):
-            pyautogui.press('altright')
-        # Now move to the selected column
-        print("J: ", self.current_selected_move["j"])
-        print("J_FIRST: ", self.current_selected_move["j_first"])
-        resta= self.current_selected_move["j"] - self.current_selected_move["j_first"]
-        if resta > 0:
-            for i in range(resta):
-                pyautogui.press('right')
+        rotaciones = self.current_selected_move["rotation_mode"]
+        j_final = self.current_selected_move["j"]
+        j_inicializ = self.current_selected_move["j_first"]
+        j_inicialde = self.current_selected_move["j_last"]
+        resta = j_final - j_inicializ
+        derecha = j_inicialde + resta
+        nmovs = abs(resta)
+        
+        # Check if can do full move to the sides instantly
+        if j_final == 0:
+            if rotaciones == 3:
+                pyautogui.press('altright')
+            else:
+                for i in range(rotaciones):
+                    # First rotate to the selected rotation
+                    pyautogui.press('up')
+            pyautogui.keyDown('left')
+            time.sleep(0.0005)
+            pyautogui.keyUp('left')
+            pyautogui.press('space')
+            return # no need to check the rest of the code
+        
+        elif j_final == 9:
+            if rotaciones == 3:
+                pyautogui.press('w')
+            else:
+                for i in range(rotaciones):
+                    # First rotate to the selected rotation
+                    pyautogui.press('up')
+            pyautogui.keyDown('right')
+            time.sleep(0.0005)
+            pyautogui.keyUp('right') 
+            pyautogui.press('space')
+            return # no need to check the rest of the code
+        
+        if resta == 0:
+            if rotaciones == 3:
+                pyautogui.press('altright')
+            else:
+                for i in range(rotaciones):
+                    # First rotate to the selected rotation
+                    pyautogui.press('up')
+            pyautogui.press('space')
+            
         else:
-            for i in range(-resta):
-                pyautogui.press('left')
-        pyautogui.press('space')
-                
-    def print_matriz(self, matrix:np.ndarray) -> None:
-        print("--------------------")
-        for i in range(len(matrix)):
-            for j in range(len(matrix[i])):
-                print(matrix[i][j], end=" ")
-            print()
-        return None
-        print("--------------------")
+            if rotaciones == 3:
+                pyautogui.press('altright')
+            else:
+                for i in range(rotaciones):
+                    # First rotate to the selected rotation
+                    pyautogui.press('up')
+            if resta > 0:
+                if derecha == 9:
+                    pyautogui.keyDown('right')
+                    time.sleep(0.0005)
+                    pyautogui.keyUp('right')
+                else:
+                    if nmovs == 4:
+                        pyautogui.press('right')
+                        pyautogui.press('right')
+                        pyautogui.press('right')
+                        pyautogui.press('right')
+                    elif nmovs == 3:
+                        pyautogui.press('right')
+                        pyautogui.press('right')
+                        pyautogui.press('right')
+                    elif nmovs == 2:
+                        pyautogui.press('right')
+                        pyautogui.press('right')
+                    else:
+                        pyautogui.press('right')
+                    # for i in range(resta):
+                    #     pyautogui.press('right')                    
+            else:
+                if nmovs == 3:
+                    pyautogui.press('left')
+                    pyautogui.press('left')
+                    pyautogui.press('left')
+                elif nmovs == 2:
+                    pyautogui.press('left')
+                    pyautogui.press('left')
+                else:
+                    pyautogui.press('left')
+                # for i in range(-resta):
+                #     pyautogui.press('left')
+            pyautogui.press('space')
